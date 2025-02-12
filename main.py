@@ -4,7 +4,7 @@ from typing import Optional
 from openai.types.chat import ChatCompletion
 
 from git_commit_bot.providers import chatgpt_client
-from .models import DiffInfo
+from git_commit_bot.models import DiffInfo
 
     
 def get_git_diff() -> Optional[DiffInfo]:
