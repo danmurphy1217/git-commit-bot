@@ -1,14 +1,11 @@
 import os
 import subprocess
 from typing import Optional
-import openai
 from openai.types.chat import ChatCompletion
-from dataclasses import dataclass
 
-@dataclass
-class DiffInfo:
-    files_changed: list[str]
-    diff_content: str
+from git_commit_bot.providers import chatgpt_client
+from .models import DiffInfo
+
     
 def get_git_diff() -> Optional[DiffInfo]:
     """Get the diff of staged changes in the git repository."""
@@ -52,7 +49,6 @@ def get_git_diff() -> Optional[DiffInfo]:
 
 def generate_commit_message(diff_info: DiffInfo, api_key: str) -> str:
     """Generate a commit message using GPT based on the diff content."""
-    openai.api_key = api_key
     
     prompt = f"""Given the following git diff, please generate a clear, concise and meaningful commit message 
     that follows conventional commit format (e.g., feat:, fix:, refactor:, etc.).
@@ -66,7 +62,7 @@ def generate_commit_message(diff_info: DiffInfo, api_key: str) -> str:
     """
     
     try:
-        response: ChatCompletion = openai.chat.completions.create(
+        response: ChatCompletion = chatgpt_client.completions.create(
             model="gpt-4",  # or gpt-3.5-turbo
             messages=[
                 {"role": "system", "content": "You are a helpful assistant that generates clear, concise and meaningful git commit messages based on diffs."},

@@ -1,0 +1,1 @@
+from .git import DiffInfo as DiffInfo
