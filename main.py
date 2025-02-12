@@ -14,7 +14,7 @@ def get_git_diff() -> Optional[DiffInfo]:
     """Get the diff of staged changes in the git repository."""
     try:
         # Get list of changed files
-        files_cmd = ["git", "diff", "--name-only"]
+        files_cmd = ["git", "diff", "--name-only", "--staged"]
         files_output = subprocess.check_output(files_cmd, text=True)
         
         if not (
@@ -39,7 +39,7 @@ def get_git_diff() -> Optional[DiffInfo]:
             return None
             
         # Get the actual diff content
-        diff_cmd = ["git", "diff"]
+        diff_cmd = ["git", "diff", "--staged"]
         diff_output = subprocess.check_output(diff_cmd, text=True)
         
         return DiffInfo(
@@ -126,10 +126,7 @@ def _check_for_new_files() -> list[str]:
     """Check for new files in the git repository."""
     status_cmd = ["git", "status", "--porcelain"]
     status_output = subprocess.check_output(status_cmd, text=True)
-    print("dis here", [
-        line[3:] for line in status_output.split('\n')
-        if line.startswith('A  ') or line.startswith('M  ')
-    ])
+
     return [
         line[3:] for line in status_output.split('\n')
         if line.startswith('A  ') or line.startswith('M  ')
