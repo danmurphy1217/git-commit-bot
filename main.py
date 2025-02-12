@@ -6,7 +6,6 @@ from openai.types.chat import ChatCompletion
 from git_commit_bot.providers import chatgpt_client
 from git_commit_bot.models import DiffInfo
 
-    
 def get_git_diff() -> Optional[DiffInfo]:
     """Get the diff of staged changes in the git repository."""
     try:
